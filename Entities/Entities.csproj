@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -93,4 +95,13 @@
     <None Include="Resources\ChatGPT Image Apr 23, 2026, 02_08_45 PM.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- ILMerge Configuration -->
+  <Target Name="MergeAssemblies" AfterTargets="Build">
+    <ItemGroup>
+      <MergeAssemblies Include="$(OutputPath)Entities.exe" />
+      <MergeAssemblies Include="$(OutputPath)Guna.UI2.dll" />
+    </ItemGroup>
+    <Exec Command="&quot;packages\ILMerge.3.0.41\tools\net452\ILMerge.exe&quot; /out:$(OutputPath)Entities.Merged.exe @(MergeAssemblies, ' ')" />
+    <Move SourceFiles="$(OutputPath)Entities.Merged.exe" DestinationFiles="$(OutputPath)Entities.exe" OverwriteReadOnlyFiles="true" />
+  </Target>
 </Project>
